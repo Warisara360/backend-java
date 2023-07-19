@@ -7,9 +7,9 @@ public class Employee {
 	private String lastName;
 	private Integer saraly;
 	
-	public Employee(Integer employee, String fristName, String lastName, Integer salaly) {
+	public Employee(Integer employeeId, String fristName, String lastName, Integer salaly) {
 		super();
-		this.employeeId = employee;
+		this.employeeId = employeeId;
 		this.fristName = fristName;
 		this.lastName = lastName;
 		this.saraly = saraly;
@@ -17,11 +17,18 @@ public class Employee {
 	public Employee() {
 		super();
 	}
-	public Integer getEmployee() {
+	
+	public Integer getEmployeeId() {
 		return employeeId;
 	}
-	public void setEmployee(Integer employee) {
-		this.employeeId = employee;
+	public void setEmployeeId(Integer employeeId) {
+		this.employeeId = employeeId;
+	}
+	public Integer getSaraly() {
+		return saraly;
+	}
+	public void setSaraly(Integer saraly) {
+		this.saraly = saraly;
 	}
 	public String getFristName() {
 		return fristName;
@@ -35,12 +42,5 @@ public class Employee {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public Integer getSalaly() {
-		return saraly;
-	}
-	public void setSalaly(Integer saraly) {
-		this.saraly = saraly;
-	}
-	
 	
 }
