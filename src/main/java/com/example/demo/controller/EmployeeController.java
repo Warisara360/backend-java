@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.awt.Robot;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import org.apache.catalina.connector.Response;
 import org.aspectj.lang.reflect.CatchClauseSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Employee;
+import com.example.demo.model.Role;
+import com.example.demo.model.Skill;
 import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.repository.RoleRepository;
+import com.example.demo.repository.SkillRepository;
 
 @RestController
 public class EmployeeController {
@@ -28,21 +34,45 @@ public class EmployeeController {
 	@Autowired
 	EmployeeRepository employeeRepository;
 	
+	@Autowired
+	RoleRepository roleRepository;
+	
+	@Autowired
+	SkillRepository  skillRepository;
+	
 	private List<Employee> data = new ArrayList<Employee>();	
 	
 	@GetMapping("/employee")
-	public List<Employee> getEmployee(){
-		return employeeRepository.findAll();
+	public ResponseEntity<Object> getEmployee(){
+		try {
+			List<Employee> employees = employeeRepository.findAll();
+					return new ResponseEntity<> (employees,HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<> ("Internal sever error",HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 	}
 	
 	@PostMapping("/employee")
 	public ResponseEntity<Object> addEmployee(@RequestBody Employee body) {
 		
 		try {
+		
+			Optional<Role> role= roleRepository.findById(4);
+			
+			body.setRole(role.get());
+			
 			Employee employee = employeeRepository.save(body);
+			
+			for(Skill skill: body.getSkills()){
+				skill.setEmployee(employee);
+				
+				skillRepository.save(skill);
+			}
 			return new ResponseEntity<>(employee, HttpStatus.CREATED);	
 		}catch (Exception e){
-			return new ResponseEntity<>("Internal server error", HttpStatus.CREATED);
+			e.printStackTrace();
+			return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 		
@@ -106,4 +136,36 @@ public class EmployeeController {
 			
 		}
 
+		}
+
+		public EmployeeRepository getEmployeeRepository() {
+			return employeeRepository;
+		}
+
+		public void setEmployeeRepository(EmployeeRepository employeeRepository) {
+			this.employeeRepository = employeeRepository;
+		}
+
+		public RoleRepository getRoleRepository() {
+			return roleRepository;
+		}
+
+		public void setRoleRepository(RoleRepository roleRepository) {
+			this.roleRepository = roleRepository;
+		}
+
+		public SkillRepository getSkillRepository() {
+			return skillRepository;
+		}
+
+		public void setSkillRepository(SkillRepository skillRepository) {
+			this.skillRepository = skillRepository;
+		}
+
+		public List<Employee> getData() {
+			return data;
+		}
+
+		public void setData(List<Employee> data) {
+			this.data = data;
 		}}
