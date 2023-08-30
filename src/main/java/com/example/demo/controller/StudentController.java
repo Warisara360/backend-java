@@ -56,29 +56,14 @@ public class StudentController {
 		}
 	}
 		
-	@GetMapping("/students/{studentId}")
-	public ResponseEntity<Object> getEmployeeDetail(@PathVariable Integer  stuId) {
-		
-	 try {
-		 Optional<Student> student = studentRepository.findById(stuId);
-		 if(student.isPresent()) {
-			 return new ResponseEntity<>(student, HttpStatus.OK);
-	 }else {
-		 return new ResponseEntity<> ("Employee not found", HttpStatus.BAD_REQUEST);
-		 }
-	 }catch (Exception e){
-			return new ResponseEntity<>("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
 	
 		
-		@PutMapping("/students/{studentId}")
-			public ResponseEntity<Object> updateStudent(@PathVariable Integer student,@RequestBody Student body) {
+		@PutMapping("/students/{id}")
+			public ResponseEntity<Object> updateStudent(@PathVariable Integer id,@RequestBody Student body) {
 			
 			try {
 
-				Optional<Student> student = studentRepository.findById(stuId);
+				Optional<Student> student = studentRepository.findById(id);
 				if (student.isPresent()) {
 					Student studentEdit= student.get();
 					studentEdit.setFristName(body.getFristName());
@@ -100,7 +85,7 @@ public class StudentController {
 		
 		
 		
-		@DeleteMapping("/students/{studentId}")
+		@DeleteMapping("/students/{id}")
 		public ResponseEntity<Object> deleteStudent(@PathVariable Integer stuId) {
 		
 			try {

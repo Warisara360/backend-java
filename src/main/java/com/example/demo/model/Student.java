@@ -12,6 +12,8 @@ public class Student {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	
+
 	private Integer stuId;
 	private String studentId;
 	private String fristName;
